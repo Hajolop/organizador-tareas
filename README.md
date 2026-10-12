@@ -1,69 +1,107 @@
-# CodeIgniter 4 Application Starter
+# Sistema organizador de tareas escolares
 
-## What is CodeIgniter?
+Aplicación web hecha con **CodeIgniter 4** (PHP 8.3) y **MariaDB** para organizar las tareas de un curso. Proyecto del curso de Algoritmos, Universidad Mariano Gálvez de Guatemala.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+Alejandro Josue Lopez Pozuelos 0910-26-6822
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Funcionalidades
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+- Registro con correo de activación, inicio y cierre de sesión, "remember me" y recuperación de contraseña por correo.
+- Perfil: editar datos (pidiendo la contraseña), cambiar contraseña, subir y eliminar foto.
+- Módulo de usuarios solo para administradores: listar, crear, ver, editar y eliminar.
+- Tareas: crear, ver, buscar, editar y eliminar, con paginación.
+- Interfaz en español e inglés.
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## Arquitectura
 
-## Installation & updates
+Aplicación monolítica de tres capas con el patrón MVC:
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+- **Presentación:** vistas en `app/Views`.
+- **Lógica de negocio:** controladores y filtros en `app/Controllers` y `app/Filters`.
+- **Datos:** modelos y migraciones en `app/Models` y `app/Database`.
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+## Requisitos
 
-## Setup
+- PHP 8.1 o superior con las extensiones intl, mbstring, mysql, curl, xml y zip
+- Composer
+- MariaDB o MySQL
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+## Instalación
 
-## Important Change with index.php
+```bash
+git clone https://github.com/USUARIO/organizador-tareas.git
+cd organizador-tareas
+composer install
+cp env .env
+```
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+Crea la base de datos y un usuario (cambia la contraseña):
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+```sql
+CREATE DATABASE organizador_tareas CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'tareas_user'@'localhost' IDENTIFIED BY 'TU_CONTRASEÑA';
+GRANT ALL PRIVILEGES ON organizador_tareas.* TO 'tareas_user'@'localhost';
+FLUSH PRIVILEGES;
+```
 
-**Please** read the user guide for a better explanation of how CI4 works!
+Edita `.env` con los datos de la base de datos y del correo:
 
-## Repository Management
+```
+CI_ENVIRONMENT = development
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+database.default.hostname = localhost
+database.default.database = organizador_tareas
+database.default.username = tareas_user
+database.default.password = TU_CONTRASEÑA
+database.default.DBDriver = MySQLi
+database.default.port = 3306
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+email.fromEmail = no-reply@organizador.local
+email.fromName = 'Organizador de tareas'
+email.protocol = smtp
+email.SMTPHost = 127.0.0.1
+email.SMTPPort = 1025
+email.SMTPCrypto =
+email.mailType = text
+email.wordWrap = false
+```
 
-## Server Requirements
+Crea las tablas y enciende el servidor:
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+```bash
+php spark migrate
+php spark serve
+```
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+La aplicación queda en http://localhost:8080
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+## Correos en desarrollo
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+Para ver los correos sin un servidor real, se usa un buzón local de pruebas que imprime cada mensaje en la terminal:
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+```bash
+sudo apt install python3-aiosmtpd
+python3 -m aiosmtpd -n -l 127.0.0.1:1025
+```
+
+En producción se cambian las líneas `email.*` del `.env` por los datos de un servidor SMTP real.
+
+## Primer administrador
+
+Regístrate desde la aplicación, activa la cuenta con el enlace del correo y conviértete en administrador:
+
+```sql
+UPDATE users SET administrator = 1 WHERE email = 'tu-correo@ejemplo.com';
+```
+
+## Seguridad
+
+- Contraseñas cifradas con `password_hash`.
+- Validación de datos en el servidor y texto escapado en las vistas.
+- Enlaces de activación y recuperación con códigos aleatorios de un solo uso.
+- Páginas protegidas por filtros de sesión y de rol.
+- El archivo `.env` no se sube al repositorio.
+
+## Entorno de desarrollo
+
+Máquina virtual en VirtualBox con Lubuntu 24.04 LTS.
