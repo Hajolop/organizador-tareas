@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400">
+  <g fill="#0d1235">
+    <path d="M0 400 L0 320 Q150 280 300 315 T600 290 T900 310 T1200 295 L1200 400 Z"/>
+  </g>
+
+  <g fill="#06081c">
+    <polygon points="380,400 420,300 520,262 700,262 800,300 840,400"/>
+
+    <rect x="0" y="248" width="345" height="14"/>
+    <rect x="60" y="262" width="12" height="80"/>
+    <rect x="140" y="262" width="12" height="80"/>
+    <rect x="220" y="262" width="12" height="80"/>
+    <rect x="300" y="262" width="12" height="80"/>
+
+    <rect x="340" y="215" width="135" height="52"/>
+    <rect x="340" y="170" width="22" height="50"/>
+    <polygon points="336,170 351,128 366,170"/>
+
+    <rect x="470" y="190" width="260" height="77"/>
+    <line x1="470" y1="186" x2="730" y2="186" stroke="#06081c" stroke-width="9" stroke-dasharray="10 8"/>
+
+    <rect x="440" y="160" width="24" height="107"/>
+    <polygon points="436,160 452,116 468,160"/>
+    <rect x="500" y="120" width="26" height="147"/>
+    <polygon points="495,120 513,64 531,120"/>
+    <rect x="543" y="140" width="14" height="127"/>
+    <polygon points="540,140 550,94 560,140"/>
+    <rect x="585" y="80" width="30" height="187"/>
+    <polygon points="580,80 600,18 620,80"/>
+    <rect x="643" y="145" width="14" height="122"/>
+    <polygon points="640,145 650,100 660,145"/>
+    <rect x="675" y="110" width="28" height="157"/>
+    <polygon points="670,110 689,52 708,110"/>
+    <rect x="736" y="150" width="24" height="117"/>
+    <polygon points="732,150 748,104 764,150"/>
+
+    <rect x="770" y="200" width="40" height="67"/>
+    <polygon points="765,200 790,158 815,200"/>
+    <rect x="810" y="228" width="125" height="40"/>
+    <rect x="905" y="188" width="20" height="45"/>
+    <polygon points="901,188 915,150 929,188"/>
+  </g>
+
+  <g fill="#04051a">
+    <path d="M0 400 L0 350 Q200 325 400 352 T800 348 T1200 342 L1200 400 Z"/>
+    <polygon points="40,355 58,300 76,355"/>
+    <polygon points="70,358 92,290 114,358"/>
+    <polygon points="250,360 266,318 282,360"/>
+    <polygon points="930,356 946,314 962,356"/>
+    <polygon points="1090,350 1110,292 1130,350"/>
+    <polygon points="1125,352 1148,284 1171,352"/>
+  </g>
+
+  <g fill="#f2c94c" opacity="0.9">
+    <rect x="597" y="100" width="6" height="11"/>
+    <rect x="597" y="140" width="6" height="11"/>
+    <rect x="597" y="180" width="6" height="11"/>
+    <rect x="597" y="220" width="6" height="11"/>
+    <rect x="510" y="140" width="6" height="11"/>
+    <rect x="510" y="185" width="6" height="11"/>
+    <rect x="686" y="130" width="6" height="11"/>
+    <rect x="686" y="170" width="6" height="11"/>
+    <rect x="745" y="170" width="6" height="11"/>
+    <rect x="745" y="210" width="6" height="11"/>
+    <rect x="449" y="180" width="6" height="11"/>
+    <rect x="449" y="225" width="6" height="11"/>
+    <rect x="547" y="165" width="6" height="11"/>
+    <rect x="647" y="170" width="6" height="11"/>
+    <rect x="482" y="212" width="6" height="11"/>
+    <rect x="527" y="212" width="6" height="11"/>
+    <rect x="572" y="212" width="6" height="11"/>
+    <rect x="625" y="212" width="6" height="11"/>
+    <rect x="665" y="212" width="6" height="11"/>
+    <rect x="712" y="212" width="6" height="11"/>
+    <rect x="347" y="190" width="6" height="11"/>
+    <rect x="380" y="232" width="6" height="11"/>
+    <rect x="410" y="232" width="6" height="11"/>
+    <rect x="440" y="232" width="6" height="11"/>
+    <rect x="786" y="215" width="6" height="11"/>
+    <rect x="830" y="240" width="6" height="11"/>
+    <rect x="860" y="240" width="6" height="11"/>
+    <rect x="890" y="240" width="6" height="11"/>
+    <rect x="912" y="200" width="6" height="11"/>
+  </g>
+
+  <g fill="#ffb347">
+    <circle cx="150" cy="120" r="10" opacity="0.18"/>
+    <circle cx="150" cy="120" r="4" opacity="0.9"/>
+    <circle cx="260" cy="190" r="10" opacity="0.18"/>
+    <circle cx="260" cy="190" r="4" opacity="0.9"/>
+    <circle cx="330" cy="90" r="10" opacity="0.18"/>
+    <circle cx="330" cy="90" r="4" opacity="0.9"/>
+    <circle cx="860" cy="100" r="10" opacity="0.18"/>
+    <circle cx="860" cy="100" r="4" opacity="0.9"/>
+    <circle cx="1000" cy="160" r="10" opacity="0.18"/>
+    <circle cx="1000" cy="160" r="4" opacity="0.9"/>
+    <circle cx="1070" cy="85" r="10" opacity="0.18"/>
+    <circle cx="1070" cy="85" r="4" opacity="0.9"/>
+  </g>
+</svg>

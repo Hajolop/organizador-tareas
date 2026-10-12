@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Almendra:wght@400;700&display=swap');
+
+body {
+    font-family: 'Almendra', Georgia, serif;
+    font-size: 18px;
+    margin: 0;
+    min-height: 100vh;
+    color: #f1e6c8;
+    background-color: #0b1026;
+    background-image:
+        radial-gradient(circle at 82% 14%, #fffdf0 0 24px, rgba(255, 253, 240, 0.25) 25px, transparent 75px),
+        radial-gradient(1.5px 1.5px at 8% 12%, #fff 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 22% 38%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 35% 18%, #fff 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 48% 55%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 60% 10%, #fff 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 70% 42%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 90% 60%, #fff 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 15% 75%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 55% 85%, #fff 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 93% 88%, #fff 50%, transparent 51%),
+        linear-gradient(180deg, #0b1026 0%, #1a1f3d 55%, #2b1b3d 100%);
+    background-attachment: fixed;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    background: rgba(8, 10, 25, 0.92);
+    border-bottom: 3px solid;
+    border-image: linear-gradient(90deg, #ae0001, #eeba30, #2a623d, #aaaaaa, #222f5b, #946b2d, #f0c75e, #372e29) 1;
+}
+
+nav a {
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #f2c94c;
+    text-decoration: none;
+    margin-right: 18px;
+}
+
+nav a:hover {
+    color: #fff3c4;
+    text-shadow: 0 0 10px rgba(242, 201, 76, 0.8);
+}
+
+nav span {
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 15px;
+    color: #fff3c4;
+    margin-right: 18px;
+}
+
+main {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 28px 32px;
+    background: rgba(10, 14, 32, 0.8);
+    border: 1px solid #d4af37;
+    border-radius: 10px;
+    box-shadow: 0 0 28px rgba(212, 175, 55, 0.2);
+}
+
+h1 {
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 700;
+    text-align: center;
+    color: #f2c94c;
+    text-shadow: 0 0 14px rgba(242, 201, 76, 0.45);
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.formulario label {
+    margin-top: 14px;
+    font-weight: bold;
+    color: #e8d9a8;
+}
+
+.formulario input {
+    padding: 9px;
+    margin-top: 4px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #2b2113;
+    background: #f5ecd0;
+    border: 1px solid #b8923a;
+    border-radius: 4px;
+}
+
+.formulario input:focus {
+    outline: none;
+    border-color: #f2c94c;
+    box-shadow: 0 0 8px rgba(242, 201, 76, 0.7);
+}
+
+.formulario .casilla {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    font-weight: normal;
+}
+
+.casilla input {
+    padding: 0;
+    margin: 0;
+}
+
+.botones {
+    margin-top: 22px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.boton-verde,
+.boton-rojo {
+    padding: 9px 20px;
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #f5ecd0;
+    text-decoration: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.boton-verde {
+    background: linear-gradient(#2a623d, #1a472a);
+    border: 1px solid #5fa77a;
+}
+
+.boton-rojo {
+    background: linear-gradient(#ae0001, #740001);
+    border: 1px solid #d3a625;
+}
+
+.boton-verde:hover,
+.boton-rojo:hover {
+    box-shadow: 0 0 12px rgba(242, 201, 76, 0.7);
+}
+
+.enlace {
+    align-self: center;
+    color: #f2c94c;
+}
+
+.alerta {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+}
+
+.alerta ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.alerta-ok {
+    background: rgba(26, 71, 42, 0.85);
+    border: 1px solid #5fa77a;
+    color: #e6f4ea;
+}
+
+.alerta-error {
+    background: rgba(116, 0, 1, 0.85);
+    border: 1px solid #d3a625;
+    color: #fde8e8;
+}
+body::before {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 26vw;
+    background: url('/img/castillo.svg') no-repeat center bottom;
+    background-size: 100% auto;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+nav,
+main {
+    position: relative;
+    z-index: 1;
+}
+a.boton-verde,
+a.boton-rojo {
+    display: inline-block;
+}
+
+.busqueda {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0;
+}
+
+.busqueda input {
+    flex: 1;
+    padding: 8px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #2b2113;
+    background: #f5ecd0;
+    border: 1px solid #b8923a;
+    border-radius: 4px;
+}
+
+.lista-tareas {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 18px;
+}
+
+.lista-tareas li {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.lista-tareas a {
+    color: #f2c94c;
+    text-decoration: none;
+}
+
+.lista-tareas a:hover {
+    text-shadow: 0 0 8px rgba(242, 201, 76, 0.7);
+}
+
+.detalle dt {
+    margin-top: 14px;
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 700;
+    color: #f2c94c;
+}
+
+.detalle dd {
+    margin: 4px 0 0;
+}
+span.boton-verde {
+    display: inline-block;
+}
+
+.boton-apagado {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.boton-apagado:hover {
+    box-shadow: none;
+}
+.avatar {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 48px;
+    color: #f2c94c;
+    background: radial-gradient(circle, #1a1f3d, #06081c);
+    border: 2px solid #d4af37;
+    border-radius: 50%;
+    box-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
+}
+img.avatar {
+    display: block;
+    object-fit: cover;
+}
+
+.centrado {
+    text-align: center;
+}
+.tabla-contenedor {
+    overflow-x: auto;
+    margin-bottom: 18px;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla th {
+    padding: 10px 12px;
+    text-align: left;
+    font-family: 'Cinzel', Georgia, serif;
+    color: #f2c94c;
+    border-bottom: 2px solid #d4af37;
+}
+
+.tabla td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.tabla a {
+    color: #f2c94c;
+    text-decoration: none;
+}
