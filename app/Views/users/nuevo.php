@@ -1,27 +1,27 @@
 <?= $this->extend('layouts/principal') ?>
 
 <?= $this->section('contenido') ?>
-    <h1>New User</h1>
-    <p><a href="/users" class="enlace">&lt;&lt; back to index</a></p>
+    <h1><?= lang('App.newUser') ?></h1>
+    <p><a href="/users" class="enlace"><?= lang('App.backToIndex') ?></a></p>
 
     <form action="/users/new" method="post" class="formulario">
         <?= csrf_field() ?>
 
-        <label for="name">Name</label>
+        <label for="name"><?= lang('App.name') ?></label>
         <input type="text" id="name" name="name" value="<?= old('name') ?>" required>
 
-        <label for="email">Email</label>
+        <label for="email"><?= lang('App.email') ?></label>
         <input type="email" id="email" name="email" value="<?= old('email') ?>" required>
 
-        <label for="password">Password</label>
+        <label for="password"><?= lang('App.password') ?></label>
         <input type="password" id="password" name="password" required>
 
-        <label for="password_repeat">Repeat password</label>
+        <label for="password_repeat"><?= lang('App.repeatPassword') ?></label>
         <input type="password" id="password_repeat" name="password_repeat" required>
 
         <div class="botones">
-            <button type="submit" class="boton-verde">Save</button>
-            <a href="/users" class="boton-rojo">Cancel</a>
+            <button type="submit" class="boton-verde"><?= lang('App.save') ?></button>
+            <a href="/users" class="boton-rojo"><?= lang('App.cancel') ?></a>
         </div>
     </form>
 <?= $this->endSection() ?>
