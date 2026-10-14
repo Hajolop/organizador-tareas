@@ -14,11 +14,22 @@ class AuthFilter implements FilterInterface
         intentar_recordarme();
 
         if (! session()->get('logueado')) {
-            return redirect()->to('/login')->with('errores', ['Debes iniciar sesión para entrar a esa página.']);
+            $this->aplicarIdioma();
+
+            return redirect()->to('/login')->with('errores', [lang('Mensajes.mustLogin')]);
         }
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
+    }
+
+    private function aplicarIdioma(): void
+    {
+        $idioma = session()->get('idioma');
+
+        if (in_array($idioma, ['es', 'en'], true)) {
+            service('language')->setLocale($idioma);
+        }
     }
 }

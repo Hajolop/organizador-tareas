@@ -14,10 +14,10 @@ class Auth extends BaseController
     public function guardarRegistro()
     {
         $reglas = [
-            'name'            => 'required|min_length[3]|max_length[100]',
-            'email'           => 'required|valid_email|max_length[150]|is_unique[users.email]',
-            'password'        => 'required|min_length[8]',
-            'password_repeat' => 'required|matches[password]',
+            'name'            => ['label' => 'App.name', 'rules' => 'required|min_length[3]|max_length[100]'],
+            'email'           => ['label' => 'App.email', 'rules' => 'required|valid_email|max_length[150]|is_unique[users.email]'],
+            'password'        => ['label' => 'App.password', 'rules' => 'required|min_length[8]'],
+            'password_repeat' => ['label' => 'App.repeatPassword', 'rules' => 'required|matches[password]'],
         ];
 
         if (! $this->validate($reglas)) {
@@ -40,8 +40,8 @@ class Auth extends BaseController
         $enviado = $this->enviarCorreoActivacion($correo, $token);
 
         $mensaje = $enviado
-            ? 'Cuenta creada. Revisa tu correo para activarla.'
-            : 'Cuenta creada, pero no se pudo enviar el correo de activación.';
+            ? lang('Mensajes.accountCreated')
+            : lang('Mensajes.accountCreatedNoMail');
 
         return redirect()->to('/')->with('mensaje', $mensaje);
     }
@@ -52,7 +52,7 @@ class Auth extends BaseController
         $usuario = $usuarios->where('activation_token', $token)->first();
 
         if ($usuario === null) {
-            return redirect()->to('/')->with('errores', ['El enlace de activación no es válido o ya fue usado.']);
+            return redirect()->to('/')->with('errores', [lang('Mensajes.activationInvalid')]);
         }
 
         $usuarios->update($usuario['id'], [
@@ -60,7 +60,7 @@ class Auth extends BaseController
             'activation_token' => null,
         ]);
 
-        return redirect()->to('/')->with('mensaje', 'Cuenta activada. Ya puedes iniciar sesión.');
+        return redirect()->to('/')->with('mensaje', lang('Mensajes.accountActivated'));
     }
 
     public function login(): string
@@ -71,8 +71,8 @@ class Auth extends BaseController
     public function iniciarSesion()
     {
         $reglas = [
-            'email'    => 'required|valid_email',
-            'password' => 'required',
+            'email'    => ['label' => 'App.email', 'rules' => 'required|valid_email'],
+            'password' => ['label' => 'App.password', 'rules' => 'required'],
         ];
 
         if (! $this->validate($reglas)) {
@@ -83,11 +83,11 @@ class Auth extends BaseController
         $usuario = $usuarios->where('email', $this->request->getPost('email'))->first();
 
         if ($usuario === null || ! password_verify($this->request->getPost('password'), $usuario['password'])) {
-            return redirect()->back()->withInput()->with('errores', ['Correo o contraseña incorrectos.']);
+            return redirect()->back()->withInput()->with('errores', [lang('Mensajes.badCredentials')]);
         }
 
         if ((int) $usuario['active'] !== 1) {
-            return redirect()->back()->withInput()->with('errores', ['La cuenta aún no está activada. Revisa tu correo.']);
+            return redirect()->back()->withInput()->with('errores', [lang('Mensajes.notActivated')]);
         }
 
         session()->regenerate();
@@ -98,7 +98,7 @@ class Auth extends BaseController
             'administrator' => (int) $usuario['administrator'],
         ]);
 
-        $respuesta = redirect()->to('/')->with('mensaje', 'Inicio de sesión exitoso. ¡Bienvenido!');
+        $respuesta = redirect()->to('/')->with('mensaje', lang('Mensajes.loginOk'));
 
         if ($this->request->getPost('remember')) {
             $token = bin2hex(random_bytes(32));
@@ -136,7 +136,7 @@ class Auth extends BaseController
         session()->remove(['logueado', 'user_id', 'user_name', 'administrator', 'perfil_confirmado']);
         $this->response->deleteCookie('recordarme');
 
-        return redirect()->to('/')->with('mensaje', 'Sesión cerrada correctamente.')->withCookies();
+        return redirect()->to('/')->with('mensaje', lang('Mensajes.logoutOk'))->withCookies();
     }
 
     private function enviarCorreoActivacion(string $correo, string $token): bool
@@ -147,8 +147,8 @@ class Auth extends BaseController
         $email = service('email');
         $email->setFrom($config->fromEmail, $config->fromName);
         $email->setTo($correo);
-        $email->setSubject('Activa tu cuenta');
-        $email->setMessage("Hola,\n\nPara activar tu cuenta entra a este enlace:\n\n" . $enlace . "\n\nSi no creaste esta cuenta, ignora este mensaje.");
+        $email->setSubject(lang('Mensajes.activationSubject'));
+        $email->setMessage(lang('Mensajes.activationBody', [$enlace]));
 
         if ($email->send()) {
             return true;

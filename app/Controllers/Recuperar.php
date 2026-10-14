@@ -13,7 +13,11 @@ class Recuperar extends BaseController
 
     public function enviar()
     {
-        if (! $this->validate(['email' => 'required|valid_email'])) {
+        $reglas = [
+            'email' => ['label' => 'App.email', 'rules' => 'required|valid_email'],
+        ];
+
+        if (! $this->validate($reglas)) {
             return redirect()->back()->withInput()->with('errores', $this->validator->getErrors());
         }
 
@@ -32,13 +36,13 @@ class Recuperar extends BaseController
             $this->enviarCorreo($correo, $token);
         }
 
-        return redirect()->to('/login')->with('mensaje', 'Si el correo está registrado, te enviamos las instrucciones para restablecer la contraseña.');
+        return redirect()->to('/login')->with('mensaje', lang('Mensajes.resetSent'));
     }
 
     public function restablecer(string $token)
     {
         if ($this->buscarPorToken($token) === null) {
-            return redirect()->to('/forgot')->with('errores', ['El enlace no es válido o ya venció. Solicita uno nuevo.']);
+            return redirect()->to('/forgot')->with('errores', [lang('Mensajes.resetInvalid')]);
         }
 
         return view('auth/restablecer', ['token' => $token]);
@@ -49,12 +53,12 @@ class Recuperar extends BaseController
         $usuario = $this->buscarPorToken($token);
 
         if ($usuario === null) {
-            return redirect()->to('/forgot')->with('errores', ['El enlace no es válido o ya venció. Solicita uno nuevo.']);
+            return redirect()->to('/forgot')->with('errores', [lang('Mensajes.resetInvalid')]);
         }
 
         $reglas = [
-            'password'        => 'required|min_length[8]',
-            'password_repeat' => 'required|matches[password]',
+            'password'        => ['label' => 'App.password', 'rules' => 'required|min_length[8]'],
+            'password_repeat' => ['label' => 'App.repeatPassword', 'rules' => 'required|matches[password]'],
         ];
 
         if (! $this->validate($reglas)) {
@@ -69,7 +73,7 @@ class Recuperar extends BaseController
             'remember_expires' => null,
         ]);
 
-        return redirect()->to('/login')->with('mensaje', 'Contraseña restablecida. Ya puedes iniciar sesión.');
+        return redirect()->to('/login')->with('mensaje', lang('Mensajes.resetDone'));
     }
 
     private function buscarPorToken(string $token): ?array
@@ -91,8 +95,8 @@ class Recuperar extends BaseController
         $email = service('email');
         $email->setFrom($config->fromEmail, $config->fromName);
         $email->setTo($correo);
-        $email->setSubject('Restablece tu contraseña');
-        $email->setMessage("Hola,\n\nRecibimos una solicitud para restablecer tu contraseña. Entra a este enlace (vale por 1 hora):\n\n" . $enlace . "\n\nSi no fuiste tú, ignora este mensaje.");
+        $email->setSubject(lang('Mensajes.resetSubject'));
+        $email->setMessage(lang('Mensajes.resetBody', [$enlace]));
 
         if ($email->send()) {
             return true;
