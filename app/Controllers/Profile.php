@@ -28,7 +28,7 @@ class Profile extends BaseController
         $usuario = $this->usuarioActual();
 
         if (! password_verify((string) $this->request->getPost('password'), $usuario['password'])) {
-            return redirect()->back()->with('errores', ['La contraseña es incorrecta.']);
+            return redirect()->back()->with('errores', [lang('Mensajes.wrongPassword')]);
         }
 
         session()->set('perfil_confirmado', time());
@@ -54,8 +54,8 @@ class Profile extends BaseController
         $id = (int) session()->get('user_id');
 
         $reglas = [
-            'name'  => 'required|min_length[3]|max_length[100]',
-            'email' => 'required|valid_email|max_length[150]|is_unique[users.email,id,' . $id . ']',
+            'name'  => ['label' => 'App.name', 'rules' => 'required|min_length[3]|max_length[100]'],
+            'email' => ['label' => 'App.email', 'rules' => 'required|valid_email|max_length[150]|is_unique[users.email,id,' . $id . ']'],
         ];
 
         if (! $this->validate($reglas)) {
@@ -70,7 +70,7 @@ class Profile extends BaseController
         session()->set('user_name', $this->request->getPost('name'));
         session()->remove('perfil_confirmado');
 
-        return redirect()->to('/profile')->with('mensaje', 'Perfil actualizado correctamente.');
+        return redirect()->to('/profile')->with('mensaje', lang('Mensajes.profileUpdated'));
     }
 
     public function clave(): string
@@ -81,9 +81,9 @@ class Profile extends BaseController
     public function guardarClave()
     {
         $reglas = [
-            'current_password'    => 'required',
-            'new_password'        => 'required|min_length[8]',
-            'new_password_repeat' => 'required|matches[new_password]',
+            'current_password'    => ['label' => 'App.currentPassword', 'rules' => 'required'],
+            'new_password'        => ['label' => 'App.newPassword', 'rules' => 'required|min_length[8]'],
+            'new_password_repeat' => ['label' => 'App.repeatNewPassword', 'rules' => 'required|matches[new_password]'],
         ];
 
         if (! $this->validate($reglas)) {
@@ -93,14 +93,16 @@ class Profile extends BaseController
         $usuario = $this->usuarioActual();
 
         if (! password_verify($this->request->getPost('current_password'), $usuario['password'])) {
-            return redirect()->back()->with('errores', ['La contraseña actual es incorrecta.']);
+            return redirect()->back()->with('errores', [lang('Mensajes.currentPasswordWrong')]);
         }
 
         $this->usuarios->update($usuario['id'], [
-            'password' => password_hash($this->request->getPost('new_password'), PASSWORD_DEFAULT),
+            'password'         => password_hash($this->request->getPost('new_password'), PASSWORD_DEFAULT),
+            'remember_token'   => null,
+            'remember_expires' => null,
         ]);
 
-        return redirect()->to('/profile')->with('mensaje', 'Contraseña actualizada correctamente.');
+        return redirect()->to('/profile')->with('mensaje', lang('Mensajes.passwordUpdated'));
     }
 
     public function imagen(): string
@@ -111,7 +113,10 @@ class Profile extends BaseController
     public function guardarImagen()
     {
         $reglas = [
-            'imagen' => 'uploaded[imagen]|is_image[imagen]|mime_in[imagen,image/jpg,image/jpeg,image/png,image/webp]|max_size[imagen,2048]',
+            'imagen' => [
+                'label' => 'App.changeImage',
+                'rules' => 'uploaded[imagen]|is_image[imagen]|mime_in[imagen,image/jpg,image/jpeg,image/png,image/webp]|max_size[imagen,2048]',
+            ],
         ];
 
         if (! $this->validate($reglas)) {
@@ -126,7 +131,7 @@ class Profile extends BaseController
         $this->borrarArchivo($usuario['profile_image']);
         $this->usuarios->update($usuario['id'], ['profile_image' => $nombre]);
 
-        return redirect()->to('/profile')->with('mensaje', 'Imagen de perfil actualizada.');
+        return redirect()->to('/profile')->with('mensaje', lang('Mensajes.imageUpdated'));
     }
 
     public function confirmarEliminarImagen(): string
@@ -140,7 +145,7 @@ class Profile extends BaseController
         $this->borrarArchivo($usuario['profile_image']);
         $this->usuarios->update($usuario['id'], ['profile_image' => null]);
 
-        return redirect()->to('/profile')->with('mensaje', 'Imagen de perfil eliminada.');
+        return redirect()->to('/profile')->with('mensaje', lang('Mensajes.imageDeleted'));
     }
 
     private function usuarioActual(): array

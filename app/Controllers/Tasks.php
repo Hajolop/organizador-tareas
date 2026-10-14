@@ -38,7 +38,7 @@ class Tasks extends BaseController
 
     public function guardar()
     {
-        if (! $this->validate(['description' => 'required|max_length[255]'])) {
+        if (! $this->validate($this->reglas())) {
             return redirect()->back()->withInput()->with('errores', $this->validator->getErrors());
         }
 
@@ -47,7 +47,7 @@ class Tasks extends BaseController
             'description' => $this->request->getPost('description'),
         ]);
 
-        return redirect()->to('/tasks')->with('mensaje', 'Tarea creada correctamente.');
+        return redirect()->to('/tasks')->with('mensaje', lang('Mensajes.taskCreated'));
     }
 
     public function ver(int $id): string
@@ -64,13 +64,13 @@ class Tasks extends BaseController
     {
         $this->buscar($id);
 
-        if (! $this->validate(['description' => 'required|max_length[255]'])) {
+        if (! $this->validate($this->reglas())) {
             return redirect()->back()->withInput()->with('errores', $this->validator->getErrors());
         }
 
         $this->tareas->update($id, ['description' => $this->request->getPost('description')]);
 
-        return redirect()->to('/tasks/' . $id)->with('mensaje', 'Tarea actualizada correctamente.');
+        return redirect()->to('/tasks/' . $id)->with('mensaje', lang('Mensajes.taskUpdated'));
     }
 
     public function eliminar(int $id)
@@ -78,7 +78,14 @@ class Tasks extends BaseController
         $this->buscar($id);
         $this->tareas->delete($id);
 
-        return redirect()->to('/tasks')->with('mensaje', 'Tarea eliminada.');
+        return redirect()->to('/tasks')->with('mensaje', lang('Mensajes.taskDeleted'));
+    }
+
+    private function reglas(): array
+    {
+        return [
+            'description' => ['label' => 'App.description', 'rules' => 'required|max_length[255]'],
+        ];
     }
 
     private function buscar(int $id): array

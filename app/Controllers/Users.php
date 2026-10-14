@@ -32,10 +32,10 @@ class Users extends BaseController
     public function guardar()
     {
         $reglas = [
-            'name'            => 'required|min_length[3]|max_length[100]',
-            'email'           => 'required|valid_email|max_length[150]|is_unique[users.email]',
-            'password'        => 'required|min_length[8]',
-            'password_repeat' => 'required|matches[password]',
+            'name'            => ['label' => 'App.name', 'rules' => 'required|min_length[3]|max_length[100]'],
+            'email'           => ['label' => 'App.email', 'rules' => 'required|valid_email|max_length[150]|is_unique[users.email]'],
+            'password'        => ['label' => 'App.password', 'rules' => 'required|min_length[8]'],
+            'password_repeat' => ['label' => 'App.repeatPassword', 'rules' => 'required|matches[password]'],
         ];
 
         if (! $this->validate($reglas)) {
@@ -50,7 +50,7 @@ class Users extends BaseController
             'administrator' => 0,
         ]);
 
-        return redirect()->to('/users')->with('mensaje', 'Usuario creado correctamente.');
+        return redirect()->to('/users')->with('mensaje', lang('Mensajes.userCreated'));
     }
 
     public function ver(int $id): string
@@ -68,15 +68,15 @@ class Users extends BaseController
         $this->buscar($id);
 
         $reglas = [
-            'name'  => 'required|min_length[3]|max_length[100]',
-            'email' => 'required|valid_email|max_length[150]|is_unique[users.email,id,' . $id . ']',
+            'name'  => ['label' => 'App.name', 'rules' => 'required|min_length[3]|max_length[100]'],
+            'email' => ['label' => 'App.email', 'rules' => 'required|valid_email|max_length[150]|is_unique[users.email,id,' . $id . ']'],
         ];
 
         $clave = (string) $this->request->getPost('password');
 
         if ($clave !== '') {
-            $reglas['password']        = 'min_length[8]';
-            $reglas['password_repeat'] = 'matches[password]';
+            $reglas['password']        = ['label' => 'App.password', 'rules' => 'min_length[8]'];
+            $reglas['password_repeat'] = ['label' => 'App.repeatPassword', 'rules' => 'matches[password]'];
         }
 
         if (! $this->validate($reglas)) {
@@ -107,7 +107,7 @@ class Users extends BaseController
             session()->set('user_name', $datos['name']);
         }
 
-        return redirect()->to('/users/' . $id)->with('mensaje', 'Usuario actualizado correctamente.');
+        return redirect()->to('/users/' . $id)->with('mensaje', lang('Mensajes.userUpdated'));
     }
 
     public function eliminar(int $id)
@@ -115,7 +115,7 @@ class Users extends BaseController
         $usuario = $this->buscar($id);
 
         if ($id === (int) session()->get('user_id')) {
-            return redirect()->back()->with('errores', ['No puedes eliminar tu propia cuenta.']);
+            return redirect()->back()->with('errores', [lang('Mensajes.cannotDeleteSelf')]);
         }
 
         if (! empty($usuario['profile_image'])) {
@@ -128,7 +128,7 @@ class Users extends BaseController
 
         $this->usuarios->delete($id);
 
-        return redirect()->to('/users')->with('mensaje', 'Usuario eliminado.');
+        return redirect()->to('/users')->with('mensaje', lang('Mensajes.userDeleted'));
     }
 
     private function buscar(int $id): array
