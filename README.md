@@ -2,7 +2,7 @@
 
 Aplicación web hecha con **CodeIgniter 4** (PHP 8.3) y **MariaDB** para organizar las tareas de un curso. Proyecto del curso de Algoritmos, Universidad Mariano Gálvez de Guatemala.
 
-Alejandro Josue Lopez Pozuelos 0910-26-6822
+**Autor:** (Alejandro Josue Lopez 0910-26-6822)
 
 ## Funcionalidades
 
@@ -10,7 +10,7 @@ Alejandro Josue Lopez Pozuelos 0910-26-6822
 - Perfil: editar datos (pidiendo la contraseña), cambiar contraseña, subir y eliminar foto.
 - Módulo de usuarios solo para administradores: listar, crear, ver, editar y eliminar.
 - Tareas: crear, ver, buscar, editar y eliminar, con paginación.
-- Interfaz en español e inglés.
+- Interfaz y mensajes en español e inglés, con cambio de idioma en cualquier pantalla.
 
 ## Arquitectura
 
@@ -29,7 +29,7 @@ Aplicación monolítica de tres capas con el patrón MVC:
 ## Instalación
 
 ```bash
-git clone https://github.com/USUARIO/organizador-tareas.git
+git clone https://github.com/Hajolop/organizador-tareas.git
 cd organizador-tareas
 composer install
 cp env .env
@@ -94,11 +94,16 @@ Regístrate desde la aplicación, activa la cuenta con el enlace del correo y co
 UPDATE users SET administrator = 1 WHERE email = 'tu-correo@ejemplo.com';
 ```
 
+Los usuarios creados por un administrador desde el módulo Users nacen activos y no reciben correo de activación.
+
 ## Seguridad
 
 - Contraseñas cifradas con `password_hash`.
 - Validación de datos en el servidor y texto escapado en las vistas.
-- Enlaces de activación y recuperación con códigos aleatorios de un solo uso.
+- Protección CSRF en todos los formularios.
+- Enlaces de activación y recuperación con códigos aleatorios de un solo uso, y de recuperación con vencimiento de 1 hora.
+- "Remember me" con un código aleatorio cuya versión cifrada se guarda en la base de datos, con vencimiento de 30 días.
+- Subida de fotos limitada a imágenes JPG, PNG o WEBP de hasta 2 MB, con nombre aleatorio.
 - Páginas protegidas por filtros de sesión y de rol.
 - El archivo `.env` no se sube al repositorio.
 
