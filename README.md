@@ -1,32 +1,23 @@
-# Sistema organizador de tareas escolares
+# Organizador de tareas escolares
 
-Aplicación web hecha con **CodeIgniter 4** (PHP 8.3) y **MariaDB** para organizar las tareas de un curso. Proyecto del curso de Algoritmos, Universidad Mariano Gálvez de Guatemala.
+Este es mi proyecto del curso de Algoritmos de la Universidad Mariano Gálvez. Es una página web para que una maestra y sus alumnos lleven el control de las tareas del curso. La hice con CodeIgniter 4 y MariaDB.
 
-**Autor:** (Alejandro Josue Lopez 0910-26-6822)
+Hecho por: 
 
-## Funcionalidades
+Cualquiera puede registrarse y le llega un correo con un enlace para activar su cuenta. Con la cuenta activa puede entrar, pedir que la página lo recuerde, recuperar su contraseña si la olvida, cambiar sus datos y su foto, y crear, buscar, editar y borrar tareas.
 
-- Registro con correo de activación, inicio y cierre de sesión, "remember me" y recuperación de contraseña por correo.
-- Perfil: editar datos (pidiendo la contraseña), cambiar contraseña, subir y eliminar foto.
-- Módulo de usuarios solo para administradores: listar, crear, ver, editar y eliminar.
-- Tareas: crear, ver, buscar, editar y eliminar, con paginación.
-- Interfaz y mensajes en español e inglés, con cambio de idioma en cualquier pantalla.
+Los administradores además pueden ver, crear, editar y borrar usuarios.
 
-## Arquitectura
+Todo se puede ver en español o en inglés con los botones de arriba.
 
-Aplicación monolítica de tres capas con el patrón MVC:
 
-- **Presentación:** vistas en `app/Views`.
-- **Lógica de negocio:** controladores y filtros en `app/Controllers` y `app/Filters`.
-- **Datos:** modelos y migraciones en `app/Models` y `app/Database`.
+Sigue el patrón MVC de CodeIgniter. Las pantallas están en `app/Views`, los controladores en `app/Controllers` y los modelos en `app/Models`. Las tablas de la base de datos se crean con las migraciones que están en `app/Database/Migrations`.
 
-## Requisitos
+## Como correrlo
 
-- PHP 8.1 o superior con las extensiones intl, mbstring, mysql, curl, xml y zip
-- Composer
-- MariaDB o MySQL
+Hace falta PHP 8.1 o más nuevo (con las extensiones intl, mbstring, mysql, curl, xml y zip), Composer y MariaDB.
 
-## Instalación
+Primero baja el proyecto e instala lo que necesita:
 
 ```bash
 git clone https://github.com/Hajolop/organizador-tareas.git
@@ -35,16 +26,11 @@ composer install
 cp env .env
 ```
 
-Crea la base de datos y un usuario (cambia la contraseña):
+Después crea la base de datos y su usuario. Cambia `TU_CONTRASEÑA` por la que quieras:
 
-```sql
-CREATE DATABASE organizador_tareas CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'tareas_user'@'localhost' IDENTIFIED BY 'TU_CONTRASEÑA';
-GRANT ALL PRIVILEGES ON organizador_tareas.* TO 'tareas_user'@'localhost';
-FLUSH PRIVILEGES;
-```
 
-Edita `.env` con los datos de la base de datos y del correo:
+
+Luego abre el archivo `.env` y deja estas líneas activas, sin el `#` del principio, con tus datos:
 
 ```
 CI_ENVIRONMENT = development
@@ -66,47 +52,38 @@ email.mailType = text
 email.wordWrap = false
 ```
 
-Crea las tablas y enciende el servidor:
+Por último crea las tablas y enciende el servidor:
 
 ```bash
 php spark migrate
 php spark serve
 ```
 
-La aplicación queda en http://localhost:8080
+La página queda en http://localhost:8080
 
-## Correos en desarrollo
+## Los correos
 
-Para ver los correos sin un servidor real, se usa un buzón local de pruebas que imprime cada mensaje en la terminal:
+Para probar sin un servidor de correo de verdad uso un buzón de prueba que muestra los correos en la terminal:
 
 ```bash
 sudo apt install python3-aiosmtpd
 python3 -m aiosmtpd -n -l 127.0.0.1:1025
 ```
 
-En producción se cambian las líneas `email.*` del `.env` por los datos de un servidor SMTP real.
+Si se usa en un servidor real, solo hay que cambiar las líneas `email.*` del `.env` por los datos del correo de verdad.
 
-## Primer administrador
 
-Regístrate desde la aplicación, activa la cuenta con el enlace del correo y conviértete en administrador:
+
+Registra una cuenta, actívala con el enlace que llega al correo y después hazla administradora desde MariaDB:
 
 ```sql
 UPDATE users SET administrator = 1 WHERE email = 'tu-correo@ejemplo.com';
 ```
 
-Los usuarios creados por un administrador desde el módulo Users nacen activos y no reciben correo de activación.
+Los usuarios que crea un administrador desde la sección de usuarios ya quedan activos y no reciben correo de activación.
 
-## Seguridad
 
-- Contraseñas cifradas con `password_hash`.
-- Validación de datos en el servidor y texto escapado en las vistas.
-- Protección CSRF en todos los formularios.
-- Enlaces de activación y recuperación con códigos aleatorios de un solo uso, y de recuperación con vencimiento de 1 hora.
-- "Remember me" con un código aleatorio cuya versión cifrada se guarda en la base de datos, con vencimiento de 30 días.
-- Subida de fotos limitada a imágenes JPG, PNG o WEBP de hasta 2 MB, con nombre aleatorio.
-- Páginas protegidas por filtros de sesión y de rol.
-- El archivo `.env` no se sube al repositorio.
+Las contraseñas se guardan cifradas, los formularios tienen protección CSRF y el archivo `.env`, que tiene las contraseñas, no se sube a GitHub. Los enlaces de activación y de recuperación usan códigos al azar que solo sirven una vez.
 
-## Entorno de desarrollo
 
-Máquina virtual en VirtualBox con Lubuntu 24.04 LTS.
+En una máquina virtual de VirtualBox con Lubuntu 24.04.
