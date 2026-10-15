@@ -8,7 +8,7 @@ class Auth extends BaseController
 {
     public function registro(): string
     {
-        return view('auth/registro');
+        return blade('auth.registro');
     }
 
     public function guardarRegistro()
@@ -65,7 +65,7 @@ class Auth extends BaseController
 
     public function login(): string
     {
-        return view('auth/login');
+        return blade('auth.login');
     }
 
     public function iniciarSesion()

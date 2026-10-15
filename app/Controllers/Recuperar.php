@@ -8,7 +8,7 @@ class Recuperar extends BaseController
 {
     public function formulario(): string
     {
-        return view('auth/olvide');
+        return blade('auth.olvide');
     }
 
     public function enviar()
@@ -45,7 +45,7 @@ class Recuperar extends BaseController
             return redirect()->to('/forgot')->with('errores', [lang('Mensajes.resetInvalid')]);
         }
 
-        return view('auth/restablecer', ['token' => $token]);
+        return blade('auth.restablecer', ['token' => $token]);
     }
 
     public function guardar(string $token)
