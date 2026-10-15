@@ -2,33 +2,22 @@
 
 namespace App\Controllers;
 
-use App\Models\TaskModel;
-use CodeIgniter\Exceptions\PageNotFoundException;
+use App\Services\TaskService;
 
 class Tasks extends BaseController
 {
-    private TaskModel $tareas;
+    private TaskService $servicio;
 
     public function __construct()
     {
-        $this->tareas = new TaskModel();
+        $this->servicio = new TaskService();
     }
 
     public function index(): string
     {
         $busqueda = trim((string) $this->request->getGet('q'));
 
-        if ($busqueda !== '') {
-            $this->tareas->like('description', $busqueda);
-        }
-
-        $lista = $this->tareas->orderBy('created_at', 'DESC')->paginate(5);
-
-        return view('tasks/index', [
-            'tareas'   => $lista,
-            'pager'    => $this->tareas->pager,
-            'busqueda' => $busqueda,
-        ]);
+        return view('tasks/index', $this->servicio->listar($busqueda) + ['busqueda' => $busqueda]);
     }
 
     public function nueva(): string
@@ -38,64 +27,42 @@ class Tasks extends BaseController
 
     public function guardar()
     {
-        if (! $this->validate($this->reglas())) {
+        if (! $this->validate($this->servicio->reglas())) {
             return redirect()->back()->withInput()->with('errores', $this->validator->getErrors());
         }
 
-        $this->tareas->insert([
-            'user_id'     => session()->get('user_id'),
-            'description' => $this->request->getPost('description'),
-        ]);
+        $this->servicio->crear((int) session()->get('user_id'), (string) $this->request->getPost('description'));
 
         return redirect()->to('/tasks')->with('mensaje', lang('Mensajes.taskCreated'));
     }
 
     public function ver(int $id): string
     {
-        return view('tasks/ver', ['tarea' => $this->buscar($id)]);
+        return view('tasks/ver', ['tarea' => $this->servicio->obtener($id)]);
     }
 
     public function editar(int $id): string
     {
-        return view('tasks/formulario', ['tarea' => $this->buscar($id)]);
+        return view('tasks/formulario', ['tarea' => $this->servicio->obtener($id)]);
     }
 
     public function actualizar(int $id)
     {
-        $this->buscar($id);
+        $this->servicio->obtener($id);
 
-        if (! $this->validate($this->reglas())) {
+        if (! $this->validate($this->servicio->reglas())) {
             return redirect()->back()->withInput()->with('errores', $this->validator->getErrors());
         }
 
-        $this->tareas->update($id, ['description' => $this->request->getPost('description')]);
+        $this->servicio->actualizar($id, (string) $this->request->getPost('description'));
 
         return redirect()->to('/tasks/' . $id)->with('mensaje', lang('Mensajes.taskUpdated'));
     }
 
     public function eliminar(int $id)
     {
-        $this->buscar($id);
-        $this->tareas->delete($id);
+        $this->servicio->eliminar($id);
 
         return redirect()->to('/tasks')->with('mensaje', lang('Mensajes.taskDeleted'));
-    }
-
-    private function reglas(): array
-    {
-        return [
-            'description' => ['label' => 'App.description', 'rules' => 'required|max_length[255]'],
-        ];
-    }
-
-    private function buscar(int $id): array
-    {
-        $tarea = $this->tareas->find($id);
-
-        if ($tarea === null) {
-            throw PageNotFoundException::forPageNotFound('La tarea no existe.');
-        }
-
-        return $tarea;
     }
 }

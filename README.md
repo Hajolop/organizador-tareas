@@ -87,3 +87,13 @@ Las contraseñas se guardan cifradas, los formularios tienen protección CSRF y 
 
 
 En una máquina virtual de VirtualBox con Lubuntu 24.04.
+
+
+
+Para no crear cuentas a mano, hay dos usuarios ya activos, parecidos a los del diseño del documento:
+
+
+- `admin@example.com`: David, administrador.
+- `migue@example.com`: Miguel, usuario normal.
+
+La contraseña de los dos es `Demo12345`. Son solo para pruebas.
