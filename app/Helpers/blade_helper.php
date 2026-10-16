@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Container\Container;
 use Jenssegers\Blade\Blade;
+use Jenssegers\Blade\Container as ContenedorBlade;
 
 if (! function_exists('blade')) {
     function blade(string $vista, array $datos = []): string
@@ -14,7 +16,10 @@ if (! function_exists('blade')) {
                 mkdir($cache, 0775, true);
             }
 
-            $motor = new Blade(APPPATH . 'Views', $cache);
+            $contenedor = new ContenedorBlade();
+            Container::setInstance($contenedor);
+
+            $motor = new Blade(APPPATH . 'Views', $cache, $contenedor);
         }
 
         return $motor->render($vista, $datos);
