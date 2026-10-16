@@ -13,11 +13,11 @@ Todo se puede ver en español o en inglés con los botones de arriba.
 
 Sigue el patrón MVC de CodeIgniter. Las pantallas están en `app/Views`, los controladores en `app/Controllers` y los modelos en `app/Models`. Las tablas de la base de datos se crean con las migraciones que están en `app/Database/Migrations`.
 
-## Como correrlo
+# Como correrlo
 
-Hace falta PHP 8.1 o más nuevo (con las extensiones intl, mbstring, mysql, curl, xml y zip), Composer y MariaDB.
+Sigue el patrón MVC de CodeIgniter, con las vistas hechas en Blade. Las pantallas están en `app/Views` (son archivos `.blade.php`), los controladores en `app/Controllers`, los modelos en `app/Models` y la lógica de las tareas en `app/Services`. Las tablas de la base de datos se crean con las migraciones de `app/Database/Migrations`.
 
-Primero baja el proyecto e instala lo que necesita:
+Dicho por capas: la presentación son las vistas de Blade y el CSS, la lógica son los controladores, los filtros y el servicio de tareas, y los datos son los modelos y la base de datos MariaDB.
 
 ```bash
 git clone https://github.com/Hajolop/organizador-tareas.git
