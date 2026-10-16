@@ -15,12 +15,12 @@ class Profile extends BaseController
 
     public function index(): string
     {
-        return view('profile/index', ['usuario' => $this->usuarioActual()]);
+        return blade('profile.index', ['usuario' => $this->usuarioActual()]);
     }
 
     public function confirmar(): string
     {
-        return view('profile/confirmar');
+        return blade('profile.confirmar');
     }
 
     public function verificar()
@@ -42,7 +42,7 @@ class Profile extends BaseController
             return redirect()->to('/profile/confirm');
         }
 
-        return view('profile/editar', ['usuario' => $this->usuarioActual()]);
+        return blade('profile.editar', ['usuario' => $this->usuarioActual()]);
     }
 
     public function actualizar()
@@ -75,7 +75,7 @@ class Profile extends BaseController
 
     public function clave(): string
     {
-        return view('profile/clave');
+        return blade('profile.clave');
     }
 
     public function guardarClave()
@@ -107,7 +107,7 @@ class Profile extends BaseController
 
     public function imagen(): string
     {
-        return view('profile/imagen');
+        return blade('profile.imagen');
     }
 
     public function guardarImagen()
@@ -136,7 +136,7 @@ class Profile extends BaseController
 
     public function confirmarEliminarImagen(): string
     {
-        return view('profile/eliminar_imagen');
+        return blade('profile.eliminar_imagen');
     }
 
     public function eliminarImagen()

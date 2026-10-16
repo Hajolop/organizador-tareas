@@ -17,12 +17,12 @@ class Tasks extends BaseController
     {
         $busqueda = trim((string) $this->request->getGet('q'));
 
-        return view('tasks/index', $this->servicio->listar($busqueda) + ['busqueda' => $busqueda]);
+        return blade('tasks.index', $this->servicio->listar($busqueda) + ['busqueda' => $busqueda]);
     }
 
     public function nueva(): string
     {
-        return view('tasks/formulario', ['tarea' => null]);
+        return blade('tasks.formulario', ['tarea' => null]);
     }
 
     public function guardar()
@@ -38,12 +38,12 @@ class Tasks extends BaseController
 
     public function ver(int $id): string
     {
-        return view('tasks/ver', ['tarea' => $this->servicio->obtener($id)]);
+        return blade('tasks.ver', ['tarea' => $this->servicio->obtener($id)]);
     }
 
     public function editar(int $id): string
     {
-        return view('tasks/formulario', ['tarea' => $this->servicio->obtener($id)]);
+        return blade('tasks.formulario', ['tarea' => $this->servicio->obtener($id)]);
     }
 
     public function actualizar(int $id)

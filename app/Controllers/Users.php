@@ -18,7 +18,7 @@ class Users extends BaseController
     {
         $lista = $this->usuarios->orderBy('created_at', 'DESC')->paginate(5);
 
-        return view('users/index', [
+        return blade('users.index', [
             'usuarios' => $lista,
             'pager'    => $this->usuarios->pager,
         ]);
@@ -26,7 +26,7 @@ class Users extends BaseController
 
     public function nuevo(): string
     {
-        return view('users/nuevo');
+        return blade('users.nuevo');
     }
 
     public function guardar()
@@ -55,12 +55,12 @@ class Users extends BaseController
 
     public function ver(int $id): string
     {
-        return view('users/ver', ['usuario' => $this->buscar($id)]);
+        return blade('users.ver', ['usuario' => $this->buscar($id)]);
     }
 
     public function editar(int $id): string
     {
-        return view('users/editar', ['usuario' => $this->buscar($id)]);
+        return blade('users.editar', ['usuario' => $this->buscar($id)]);
     }
 
     public function actualizar(int $id)
